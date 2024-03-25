@@ -1,0 +1,13 @@
+cart
+= addtocart - done
+= increasequantity - doen
+= decreasequantity - done
+= removefromcart - done
+= empty cart - done
+
+
+order
+= placeorder
+
+
+->fetch userdata -> cart + order
