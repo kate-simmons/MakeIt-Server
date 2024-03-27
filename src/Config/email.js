@@ -90,7 +90,7 @@ export async function SendEmail(email, bill) {
 
     // sending email and providing data (what to send, whom to send, etc)
     let info = await transporter.sendMail({
-      from: "janager8860000281@gmail.com", // Sender address
+      from: "kshama.ibsar@gmail.com", // Sender address
       to: email, // Recipient's email
       subject: "Thank you for ordering with Make-It", // Subject line
       text: emailContent, // Plain text body
