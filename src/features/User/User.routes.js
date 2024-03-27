@@ -42,4 +42,12 @@ userRouter.post("/emptyCart", (req, res) => {
   usercontrol.emptyCart(req, res);
 });
 
+userRouter.post("/orders", (req, res) => {
+  usercontrol.OrderCreate(req, res);
+});
+
+userRouter.post("/order/validate", (req, res) => {
+  usercontrol.OrderValidate(req, res);
+});
+
 export default userRouter;

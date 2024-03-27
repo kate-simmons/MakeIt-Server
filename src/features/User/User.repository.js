@@ -11,6 +11,7 @@ import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
 } from "firebase/auth";
+import { SendEmail } from "../../Config/email.js";
 
 export default class UserRepository {
   constructor() {
@@ -27,6 +28,7 @@ export default class UserRepository {
       await setDoc(doc(db, this.collection, userCredential.user.uid), {
         cart: [],
         orders: [],
+        email: email,
       });
 
       return { status: true, data: { userid: userCredential.user.uid } };
@@ -147,13 +149,21 @@ export default class UserRepository {
 
   async placeOrder({ id, data }) {
     try {
+      console.log(id, data);
       const res = await getDoc(doc(db, this.collection, id));
       const response = res.data();
       await updateDoc(doc(db, this.collection, id), {
         orders: [...response.orders, data],
       });
+      console.log("order added");
+      await SendEmail(response.email, {
+        date: data.date,
+        total: data.totalPrice,
+      });
+
+      console.log("email sent");
       await this.emptyCart(id);
-      return { status: true, msg: "cart emptied" };
+      return { status: true, msg: "new order placed" };
     } catch (err) {
       return { status: false, err: err.message };
     }

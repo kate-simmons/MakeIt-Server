@@ -1,5 +1,6 @@
 import UserRepository from "./User.repository.js";
-
+import Razorpay from "razorpay";
+import crypto from "crypto";
 class UserController {
   constructor() {
     this.repository = new UserRepository();
@@ -91,10 +92,52 @@ class UserController {
   async emptyCart(req, res) {
     try {
       const response = await this.repository.emptyCart(req.body.id);
-
       res.status(200).send(response);
     } catch (err) {
       res.status(500).send(err.message);
+    }
+  }
+
+  //code to add order
+  async OrderCreate(req, res) {
+    const razorpay = new Razorpay({
+      key_id: process.env.RAZORPAY_KEY_ID,
+      key_secret: process.env.RAZORPAY_SECRET,
+    });
+
+    console.log("inside order create");
+    try {
+      const { amount } = req.body;
+      // console.log(orders);
+      // const order = await razorpay.orders.create(options);
+      const order = await razorpay.orders.create({
+        amount: amount * 100,
+        currency: "INR",
+        receipt: "receipt#1",
+      });
+      if (!order) {
+        res.status(500).send("Error");
+      } else {
+        res.status(200).json(order);
+      }
+    } catch (err) {
+      console.log(err.message);
+    }
+  }
+
+  //code to validate order
+  OrderValidate(req, res) {
+    console.log(req.body);
+    const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
+      req.body;
+
+    const sha = crypto.createHmac("sha256", process.env.RAZORPAY_SECRET);
+    sha.update(`${razorpay_order_id}|${razorpay_payment_id}`);
+    const digest = sha.digest("hex");
+    if (digest !== razorpay_signature) {
+      return res.status(400).send("Payment is invalid");
+    } else {
+      return res.json({ msg: "Payment success" });
     }
   }
 }
