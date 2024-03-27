@@ -156,10 +156,10 @@ export default class UserRepository {
         orders: [...response.orders, data],
       });
       console.log("order added");
-      /*await SendEmail(response.email, {
+      await SendEmail(response.email, {
         date: data.date,
         total: data.totalPrice,
-      });*/
+      });
 
       console.log("email sent");
       await this.emptyCart(id);

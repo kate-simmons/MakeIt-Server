@@ -2,6 +2,7 @@ import nodemailer from "nodemailer";
 
 export async function SendEmail(email, bill) {
   console.log(email, bill);
+  console.log("send email ", process.env.EMAIL_USER, process.env.EMAIL_PASS); 
   try {
     // nodemailer transporter (for the credentials and authorization)
     // using Brevo for SMTP (visit its documentation for more details)
