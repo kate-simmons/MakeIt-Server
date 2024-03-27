@@ -149,17 +149,17 @@ export default class UserRepository {
 
   async placeOrder({ id, data }) {
     try {
-      console.log(id, data);
+      console.log("inside placeOrder ",id, data);
       const res = await getDoc(doc(db, this.collection, id));
       const response = res.data();
       await updateDoc(doc(db, this.collection, id), {
         orders: [...response.orders, data],
       });
       console.log("order added");
-      await SendEmail(response.email, {
+      /*await SendEmail(response.email, {
         date: data.date,
         total: data.totalPrice,
-      });
+      });*/
 
       console.log("email sent");
       await this.emptyCart(id);
