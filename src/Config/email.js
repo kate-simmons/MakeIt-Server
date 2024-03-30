@@ -82,7 +82,7 @@ export async function SendEmail(email, bill) {
             <br>
            Your total bill is : ${bill.total} rs.
           </p>
-          <a class="button" href="https://makeit.com/">Click Here To Visit your Make-It Account</a>
+          <a class="button" href="https://make-it-client.vercel.app/">Click Here To Visit your Make-It Account</a>
         </div>
       </div>
     </body>
@@ -91,7 +91,7 @@ export async function SendEmail(email, bill) {
 
     // sending email and providing data (what to send, whom to send, etc)
     let info = await transporter.sendMail({
-      from: "https://make-it-client.vercel.app/", // Sender address
+      from: "makeit2103@gmail.com", // Sender address
       to: email, // Recipient's email
       subject: "Thank you for ordering with Make-It", // Subject line
       text: emailContent, // Plain text body
